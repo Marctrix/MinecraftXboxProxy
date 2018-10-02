@@ -89,7 +89,7 @@ class Program
             xBoxIp = IPAddress.Parse(args[0]);
 
         if (args.Length >= 2)
-            xBoxIp = IPAddress.Parse(args[0]);
+            xBoxIp = IPAddress.Parse(args[1]);
                 
         var minecraft = new IPEndPoint(serverIp, gamePort);
         clients.Add(gamePort, gameEndpoint);
