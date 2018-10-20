@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src\MinecraftXboxProxy", "src\MinecraftXboxProxy\MinecraftXboxProxy.csproj", "{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftXboxProxy", "src\MinecraftXboxProxy\MinecraftXboxProxy.csproj", "{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftXboxProxy.Console", "src\MinecraftXboxProxy.Console\MinecraftXboxProxy.Console.csproj", "{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

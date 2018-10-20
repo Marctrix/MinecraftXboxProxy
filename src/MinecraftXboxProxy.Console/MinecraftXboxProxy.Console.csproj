@@ -4,13 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EB855B69-C3FC-49FF-B9F1-BD4A3BBA3B72}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>MinecraftXboxProxy</RootNamespace>
-    <AssemblyName>MinecraftXboxProxy</AssemblyName>
+    <ProjectGuid>{D8D37517-D6DB-4FB9-8CEC-BBB4D0299D9C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MinecraftProxy.Console</RootNamespace>
+    <AssemblyName>MinecraftProxy.Console</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,9 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,10 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MinecraftXboxProxyService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UdpListener.cs" />
-    <Compile Include="UdpPackage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MinecraftXboxProxy\MinecraftXboxProxy.csproj">
+      <Project>{eb855b69-c3fc-49ff-b9f1-bd4a3bba3b72}</Project>
+      <Name>MinecraftXboxProxy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
