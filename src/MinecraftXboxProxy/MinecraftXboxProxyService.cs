@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 public class MinecraftXboxProxyService
@@ -10,6 +13,9 @@ public class MinecraftXboxProxyService
 
     readonly UdpListener _gameListener;
     readonly Dictionary<int, UdpListener> _clients = new Dictionary<int, UdpListener>();
+
+    private CancellationTokenSource _cancellationToken;
+    private List<Task> runningTasks = new List<Task>();
 
     public MinecraftXboxProxyService(IPAddress xBox, IPAddress server, int gamePort)
     {
@@ -22,28 +28,36 @@ public class MinecraftXboxProxyService
     }
 
 
-    public Task Start()
+    public void Start()
     {
+        if (runningTasks.Any())
+            throw new InvalidOperationException("Proxy Service already started. Please stop it first!");
+
+        _cancellationToken = new CancellationTokenSource();
+
         //start listening for messages and copy the messages back to the client
-        return Task.Factory.StartNew(async () =>
+        var task = Task.Factory.StartNew(async () =>
         {
-            while (true)
+            while (!_cancellationToken.Token.IsCancellationRequested)
             {
                 var received = await _gameListener.Receive();
 
                 if (received.Sender.Address.Equals(_xBox))
                 {
                     if (received.Sender.Port != _gamePort)
-                        StartListeningForwarder(received.Sender.Port);
+                        StartListeningForwarder(received.Sender.Port, _cancellationToken.Token);
 
                     await _clients[received.Sender.Port].Forward(received.Message, new IPEndPoint(_server, _gamePort));
                 }
-
             }
-        });
+
+            _clients.Remove(_gamePort);
+        }, _cancellationToken.Token);
+
+        runningTasks.Add(task);
     }
 
-    void StartListeningForwarder(int port)
+    void StartListeningForwarder(int port, CancellationToken token)
     {
         if (_clients.ContainsKey(port))
             return;
@@ -52,14 +66,38 @@ public class MinecraftXboxProxyService
 
         _clients.Add(port, udpClient);
 
-        Task.Factory.StartNew(async () =>
+        var task = Task.Factory.StartNew(async () =>
         {
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 var singleMessage = await udpClient.Receive();
                 await _gameListener.Forward(singleMessage.Message, new IPEndPoint(_xBox, port));
             }
-        });
+            CleanUpClientOnPort(port);
+            
+        }, token);
+
+        runningTasks.Add(task);
+    }
+
+    private void CleanUpClientOnPort(int port)
+    {
+        if (!_clients.ContainsKey(port))
+            return;
+
+        var client = _clients[port];
+        client.Dispose();
+
+        _clients.Remove(port);
+    }
+
+    public void Stop() {
+        _cancellationToken.Cancel();
+
+        Task.WaitAll(runningTasks.ToArray());
+
+        _cancellationToken.Dispose();
+        runningTasks.Clear();
     }
 }
 

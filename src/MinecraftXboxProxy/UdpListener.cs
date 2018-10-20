@@ -1,8 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 //Server
-class UdpListener
+class UdpListener : IDisposable
 {
     protected UdpClient Client;
 
@@ -13,6 +14,12 @@ class UdpListener
     public UdpListener(IPEndPoint endpoint)
     {        
         Client = new UdpClient(endpoint);        
+    }
+
+    public void Dispose()
+    {
+        Client.Dispose();
+        Client = null;
     }
 
     public async Task Forward(byte[] message, IPEndPoint endpoint)
