@@ -7,31 +7,27 @@ using System.Threading.Tasks;
 
 public class MinecraftXboxProxyService
 {
-    private readonly IPAddress _xBox;
-    private readonly IPAddress _server;
-    private readonly int _gamePort;
+    private IPAddress _xBox;
+    private IPAddress _server;
+    private int _gamePort;
 
-    readonly UdpListener _gameListener;
+    UdpListener _gameListener;
     readonly Dictionary<int, UdpListener> _clients = new Dictionary<int, UdpListener>();
 
     private CancellationTokenSource _cancellationToken;
     private List<Task> runningTasks = new List<Task>();
 
-    public MinecraftXboxProxyService(IPAddress xBox, IPAddress server, int gamePort)
+    public void Start(IPAddress xBox, IPAddress server, int gamePort)
     {
+        if (runningTasks.Any())
+            throw new InvalidOperationException("Proxy Service already started. Please stop it first!");
+
         _xBox = xBox;
         _server = server;
         _gamePort = gamePort;
 
         _gameListener = new UdpListener(new IPEndPoint(IPAddress.Any, gamePort));
         _clients.Add(gamePort, _gameListener);
-    }
-
-
-    public void Start()
-    {
-        if (runningTasks.Any())
-            throw new InvalidOperationException("Proxy Service already started. Please stop it first!");
 
         _cancellationToken = new CancellationTokenSource();
 

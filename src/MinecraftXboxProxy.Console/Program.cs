@@ -18,8 +18,8 @@ namespace MinecraftXboxProxy.Console
             if (args.Length >= 2)
                 serverIp = IPAddressFromArgs(args[1]);
 
-            var proxy = new MinecraftXboxProxyService(xBoxIp, serverIp, gamePort);
-            proxy.Start();
+            var proxy = new MinecraftXboxProxyService();
+            proxy.Start(xBoxIp, serverIp, gamePort);
 
             //create a new client
             //type ahead :-)
